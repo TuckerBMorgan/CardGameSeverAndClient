@@ -13,7 +13,7 @@ var state = {
 exports.newPlayer = function(playerGuid, socket, state){
 	state.players.guid(playerGuid);
 };
-exports.processMove = function(message, socket, state){
+exports.processMove = function(message, socket){
 	  switch(message.type){
 		  
 		  case "newPlayer":
