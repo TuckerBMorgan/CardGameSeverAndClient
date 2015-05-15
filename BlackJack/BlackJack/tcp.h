@@ -28,7 +28,7 @@ class tcp{
 public:
 	static tcp* Instance();
 	bool init(string addfress, int portNumber);
-	void Send(string message, NetworkEar* ear);
+	void Send(string message);
 private:
 	int portNumber;
 	thread* writing;

@@ -1,6 +1,7 @@
 #include "tcp.h"
+#include "RuneEventManager.h"
 int WNDSOCKET_ENDCHARACTER = -52;
-
+#define RuneEvent RuneEventManager::Instance()
 string findMessageInStream(char* stream, int streamLength){
 
 	int count = 0;
@@ -36,8 +37,7 @@ tcp* tcp::Instance(){
 	}
 	return instance;
 }
-void tcp::Send(string message, NetworkEar* ear){
-	currentEar = ear;
+void tcp::Send(string message){
 	sendbuff = message;
 }
 
@@ -54,11 +54,9 @@ void tcp::Read(){
 		int checkResult = recv(ConnectSocket, recvbuff, recvbuflen, 0);
 		if (checkResult > 0){
 			string messageInString = findMessageInStream(recvbuff, recvbuflen);
-			
-			if (currentEar){
-				currentEar->MessageCallback(messageInString);
+			if (RuneEvent != NULL){
+				RuneEvent->ExectueRune(messageInString);
 			}
-			return;
 		}
 		else if (checkResult == 0){
 			closesocket(ConnectSocket);

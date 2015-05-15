@@ -8,6 +8,8 @@
 #include "Includes\stringbuffer.h"
 #include <guiddef.h>
 #include <cstdio>
+#include "RuneEventManager.h"
+#define RuneEvent RuneEventManager::Instance()
 using namespace std;
 using namespace rapidjson;
 
@@ -33,7 +35,8 @@ void InitState::enterState(){
 		StringBuffer buffer;
 		Writer<StringBuffer> writer(buffer);
 		newConc.Accept(writer);
-		client->Send(buffer.GetString(), this);
+		tcp::Instance()->Send(buffer.GetString());
+		RuneEvent->RegisterRune("newConnection", this);
 	}
 }
 void InitState::exitState(){
@@ -42,14 +45,12 @@ void InitState::exitState(){
 void InitState::tick(){
 
 }
-void InitState::MessageCallback(string message){
+void InitState::RuneCallback(string runeType, string rune){
 	
-	cout << "IT got to me";
-	Document maybe;
-	maybe.Parse<0>(message.c_str());
-	string type = maybe["type"].GetString();
-	if (type == "connected"){
-		cout << " We are connected";
+
+	if (runeType == "newConnection"){
+		cout << " We are connected\n";
+		RuneEvent->DerigesterRune("newConnection", this);
 		RunningState* runningState = new RunningState();
 		BlackJack::Instance()->PushState(runningState);
 	}

@@ -1,6 +1,6 @@
 #pragma once
-#include "NetworkEar.h"
-class state : public virtual NetworkEar{
+#include "RuneEventManager.h"
+class state : public virtual RuneEventListener{
 public:
 	virtual void enterState() = 0;
 	virtual void exitState() = 0;

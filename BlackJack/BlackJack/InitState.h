@@ -12,5 +12,5 @@ public:
 	void enterState() override;
 	void exitState() override;
 	void tick() override;
-	void MessageCallback(string message) override;
+	void RuneCallback(string, string) override;
 };

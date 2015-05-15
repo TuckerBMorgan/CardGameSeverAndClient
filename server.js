@@ -1,5 +1,4 @@
 var blackJack = require("./blackJack");
-
 var net = require('net');
 var deckGen = require("./deckGeneration");
 var state = {
@@ -14,6 +13,7 @@ var server = net.createServer(function(socket){
 });
 
 exports.sendMessage = function(message, socket){
+	console.log(message);
 	socket.write(message + "\n\n");	
 };
 

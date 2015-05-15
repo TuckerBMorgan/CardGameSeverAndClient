@@ -8,7 +8,9 @@ var state = {
 	"playerHands":{},//playerHands[playerGuid] is the current hand of a person, 0n is the card that the others can't see
 	"players":[],//players[n] in a guid of a player, placed in connection order
 	"sockets":{},//socket has 
-	"playerGuids":{}//playerGuids[Socket] will return the guid of the player that is part of that server 
+	"playerGuids":{},//playerGuids[Socket] will return the guid of the player that is part of that server
+	"playerState":{}, //playerState[playerGuid] is the current state of the player, inPlay, folded, or busted
+	"handValue":{} //HandValue[playerGuid] is the current value of the players Hand, is calculated on card deal
 };
 exports.newPlayer = function(playerGuid, socket, state){
 	state.players.guid(playerGuid);
@@ -22,7 +24,10 @@ exports.processMove = function(message, socket){
 		  break;
 		  
 		  case "newConnection":
-		  server.sendMessage(JSON.stringify(constuctMessage("connected", null)), socket);
+		  var newConnectionRune= {
+			  "runeType":"newConnection"
+		  };
+		  server.sendMessage(JSON.stringify(newConnectionRune), socket);
 		  break;
 		  
 		  case "moveSelection":
@@ -34,16 +39,7 @@ exports.processMove = function(message, socket){
 function GenerateBlankSlate(){
 	state.deck = deckGeneration.deckGeneration();
 	state.playerHands = {};
-	state.player = [];
+	state.players = [];
 	state.sockets = {};
 	state.playerGuids = {};
-}
-
-function constuctMessage(type, payLoad){
-	var message = {
-		"type": type,
-		"payLoad":payLoad
-	} 
-	console.log(JSON.stringify(message));
-	return message;
 }

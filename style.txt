@@ -1,0 +1,2 @@
+// a message is of client origin and is how the client talks to the server
+//a rune is of server origin and is how the server talks to the server 
